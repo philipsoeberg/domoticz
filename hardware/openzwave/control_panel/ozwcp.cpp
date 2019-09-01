@@ -1071,6 +1071,8 @@ std::string COpenZWaveControlPanel::SendPollResponse()
 	if (noop)
 		noop = false;
 	bcnt = logbytes;
+#if 0
+//PS HACK, Removed this to speed up CP (if you need log, get it through a console!)
 	if (stat("./Config/OZW_Log.txt", &buf) != -1 &&
 		buf.st_size > bcnt &&
 		(fp = fopen("./Config/OZW_Log.txt", "r")) != NULL) 
@@ -1088,6 +1090,7 @@ std::string COpenZWaveControlPanel::SendPollResponse()
 			fclose(fp);
 		}
 	}
+#endif
 	logbuffer[logread] = '\0';
 
 	TiXmlElement* logElement = new TiXmlElement("log");
