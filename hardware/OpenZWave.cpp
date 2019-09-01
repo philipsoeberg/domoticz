@@ -2265,19 +2265,19 @@ void COpenZWave::AddValue(const OpenZWave::ValueID &vID, const NodeInfo *pNodeIn
 	}
 	else if (commandclass == COMMAND_CLASS_CENTRAL_SCENE)
 	{
-		if (vLabel == "Scene ID")
+		if (vLabel == "Scene Number")
 		{
 			if (vType == OpenZWave::ValueID::ValueType_Byte)
 			{
 				if (m_pManager->GetValueAsByte(vID, &byteValue) == true)
 				{
-					if (byteValue == 0)
-						return;
-					instance = byteValue;
 					_device.instanceID = instance;
+					if (_device.instanceID >= 128) _device.instanceID = 127;
 					_device.devType = ZDTYPE_CENTRAL_SCENE;
-					_device.intvalue = 0;
+					_device.intvalue = byteValue;
+					_log.Log(LOG_NORM, "PS HACK: COpenZWave::AddValue() instance: %d _device.instance %d byteValue %d intvalue %d", instance, _device.instanceID, byteValue, _device.intvalue);
 					InsertDevice(_device);
+					SendDevice2Domoticz(&_device);
 				}
 			}
 		}
@@ -2518,7 +2518,7 @@ void COpenZWave::UpdateValue(const OpenZWave::ValueID &vID)
 
 	if (commandclass == COMMAND_CLASS_CENTRAL_SCENE)
 	{
-		if (vLabel != "Scene ID")
+		if (vLabel != "Scene Number")
 		{
 			return;
 		}
@@ -3269,7 +3269,7 @@ void COpenZWave::UpdateValue(const OpenZWave::ValueID &vID)
 	case ZDTYPE_CENTRAL_SCENE:
 		if (vType == OpenZWave::ValueID::ValueType_Byte)
 		{
-			pDevice->intvalue = 255;
+			pDevice->intvalue = byteValue;
 		}
 		break;
 	}

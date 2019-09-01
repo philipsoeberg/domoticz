@@ -290,7 +290,7 @@ void ZWaveBase::SendSwitchIfNotExists(const _tZWaveDevice *pDevice)
 		int level = pDevice->intvalue;
 
 		// Simple on/off device, make sure we only have 0 or 255
-		if ((pDevice->devType == ZDTYPE_SWITCH_NORMAL)|| (pDevice->devType == ZDTYPE_CENTRAL_SCENE))
+		if (pDevice->devType == ZDTYPE_SWITCH_NORMAL)
 			level = (level == 0) ? 0 : 255;
 
 		// Now check the values
@@ -369,7 +369,7 @@ void ZWaveBase::SendDevice2Domoticz(const _tZWaveDevice *pDevice)
 		int level = pDevice->intvalue;
 
 		// Simple on/off device, make sure we only have 0 or 255
-		if ((pDevice->devType == ZDTYPE_SWITCH_NORMAL)|| (pDevice->devType == ZDTYPE_CENTRAL_SCENE))
+		if (pDevice->devType == ZDTYPE_SWITCH_NORMAL)
 			level = (level == 0) ? 0 : 255;
 
 		// Now check the values
@@ -392,6 +392,7 @@ void ZWaveBase::SendDevice2Domoticz(const _tZWaveDevice *pDevice)
 		gswitch.level=level;
 		gswitch.rssi=12;
 		sDecodeRXMessage(this, (const unsigned char *)&gswitch, NULL, BatLevel);
+		_log.Log(LOG_STATUS,"PS HACK: sDecodeRXMessage DONE: gswitch.level %d, gswitch.cmnd %d", gswitch.level, gswitch.cmnd);
 		return;
 	}
 	else if ((pDevice->devType == ZDTYPE_SWITCH_RGBW) || (pDevice->devType == ZDTYPE_SWITCH_COLOR))
