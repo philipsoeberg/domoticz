@@ -1,0 +1,2 @@
+cmake -USE_STATIC_OPENZWAVE -DCMAKE_BUILD_TYPE=Release
+make

@@ -1,0 +1,22 @@
+[Unit]
+Description=Domoticz Server
+#Requires=After=mysql.service       # Requires the mysql service to run first
+#Conflicts=node-red.service
+
+[Service]
+#ExecStart=/srv/domoticz/domoticz -www 8080
+ExecStart=/srv/domoticz/domoticz -www 8080 -verbose 1 -loglevel 0 -debug
+WorkingDirectory=/srv/domoticz
+Restart=on-failure
+RestartSec=1m
+Nice=-5
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=domoticz
+#User=<alternate user>
+#Group=<alternate group>
+#Environment=NODE_ENV=production PORT=5005
+
+[Install]
+WantedBy=multi-user.target
+
